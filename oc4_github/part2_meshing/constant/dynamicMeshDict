@@ -1,0 +1,98 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2206                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      dynamicMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+motionSolverLibs    (sixDoFRigidBodyMotion);
+
+dynamicFvMesh       dynamicMotionSolverFvMesh;
+
+solver          sixDoFRigidBodyMotion;
+
+sixDoFRigidBodyMotionCoeffs
+{
+
+    patches         (float);
+    innerDistance   10;
+    outerDistance   40.0;
+
+    centreOfMass    (0.0 0.0 0.54);
+
+    
+
+    // Cuboid mass
+    mass            1.3473E7;
+
+    // Cuboid moment of inertia about the centre of mass
+    momentOfInertia (6.827E9  6.827E9  1.226E10);
+
+    report          on;
+    accelerationRelaxation 0.2;
+    accelerationDamping    1.0;
+
+    solver
+    {
+        type CrankNicolson;//Newmark;
+    }
+
+    constraints
+    {
+
+        /*
+        fixedPoint
+        {
+             sixDoFRigidBodyMotionConstraint point;
+             centreOfRotation (0.5 0.45 0.1);
+        }
+        */
+
+        /*fixedLine
+        {
+            sixDoFRigidBodyMotionConstraint line;
+            //centreOfRotation (0.5 0.45 0.1);
+            direction (0 0 1);
+        }*/
+
+        /*
+        fixedAxis
+        {
+            sixDoFRigidBodyMotionConstraint axis;
+            axis (0 1 0);
+        }
+        */
+        /*moorDynR1
+		{
+			sixDoFRigidBodyMotionRestraint moorDynR1;
+		}*/
+    }
+    
+    restraints
+	{
+		/*verticalSpring
+		{
+			sixDoFRigidBodyMotionRestraint linearSpring;
+
+			anchor          (0 0 0);
+			refAttachmentPt (0 0 0);
+			stiffness       1;
+			damping         1;
+			restLength      10;
+		}*/
+
+    
+	}
+}
+
+
+// ************************************************************************* //

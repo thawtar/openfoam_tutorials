@@ -1,0 +1,28 @@
+#!/bin/sh
+
+foamCleanTutorials
+blockMesh
+surfaceFeatureExtract
+
+#topoSet -dict system/topoSetDict.1
+#refineMesh -dict system/refineMeshDict -overwrite
+#topoSet -dict system/topoSetDict.2
+#refineMesh -dict system/refineMeshDict -overwrite
+
+decomposePar -force
+
+mpirun -np 6 snappyHexMesh -parallel -overwrite
+
+mpirun -np 6 checkMesh -parallel -constant
+
+reconstructParMesh -constant
+
+rm -rf 0
+
+cp -r 0.orig 0
+
+setFields
+
+decomposePar -force
+
+#------------------------------------------------------------------------------
